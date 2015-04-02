@@ -9,6 +9,10 @@ void ofApp::update() {
     dt = ofGetElapsedTimef() - t;
     t = ofGetElapsedTimef();
     game.tick(dt);
+    frame++;
+    if(frame % 60 == 0) {
+        cout << "dt: " << dt << ", fps: " << 1.0f / dt << endl;
+    }
 }
 
 void ofApp::draw() {

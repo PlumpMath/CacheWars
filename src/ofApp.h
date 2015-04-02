@@ -6,6 +6,7 @@
 
 class ofApp : public ofBaseApp {
 
+    int frame = 0;
     float dt, t;
     ObjectOrientedGame game;
     

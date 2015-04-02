@@ -32,11 +32,16 @@ void ShipRenderer::render(const ofRectangle& cameraRect) {
     }
 }
 
-void GoInCircles::tick(float dt) {
-    assert(renderer);
-    direction += sinf(ofGetElapsedTimef()) * speed * 0.01f * dt;
+void GoInCircles::moveForward(float dt) {
     renderer->position.x += cosf(direction) * speed * dt;
     renderer->position.y += sinf(direction) * speed * dt;
+}
+
+void GoInCircles::tick(float dt) {
+    assert(renderer);
+    speed += 10.0f * dt;
+    direction += sinf(ofGetElapsedTimef()) * speed * 0.01f * dt;
+    moveForward(dt);
     renderer->direction = direction;
 
     assert(*worldSize);
@@ -44,4 +49,10 @@ void GoInCircles::tick(float dt) {
     if(renderer->position.x > *worldSize) renderer->position.x = 0;
     if(renderer->position.y < 0) renderer->position.y = *worldSize;
     if(renderer->position.y > *worldSize) renderer->position.y = 0;
+}
+
+void GoInCircles::onCollision(ofPtr<GameObject> other) {
+    speed = ofRandom(10, 20);
+    direction += PI;
+    moveForward(1.0);
 }

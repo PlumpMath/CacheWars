@@ -10,37 +10,11 @@ ofColor randomColor() {
 void ObjectOrientedGame::setup() {
     cameraRect = ofRectangle(0, 0, ofGetWidth(), ofGetHeight());
     
-    for(int i = 0; i < 5000; i++) {
+    for(int i = 0; i < gameObjectCount; i++) {
         stringstream s;
         s << "go" << i;
         makeGameObject(s.str());
     }
-}
-
-void ObjectOrientedGame::tick(float dt) {
-    cameraRect.translate(cameraMovement.x * cameraPanSpeed * dt,
-                         cameraMovement.y * cameraPanSpeed * dt);
-    
-    for (int i = 0; i < gameObjects.size(); ++i) {
-        gameObjects[i]->tick(dt);
-    }
-
-    cout << "dt: " << dt << ", fps: " << 1.0f / dt << endl;
-}
-
-void ObjectOrientedGame::render() {
-    ofBackground(10);
-    ofFill();
-    ofSetColor(50);
-    ofRect(ofRectangle(-cameraRect.x, -cameraRect.y, worldSize, worldSize));
-    
-    for (int i = 0; i < gameObjects.size(); ++i) {
-        gameObjects[i]->render(cameraRect);
-    }
-}
-
-ofPoint ObjectOrientedGame::randomCoordinate() {
-    return ofPoint(ofRandom(worldSize), ofRandom(worldSize));
 }
 
 ofPtr<GameObject> ObjectOrientedGame::makeGameObject(string name) {
@@ -57,7 +31,44 @@ ofPtr<GameObject> ObjectOrientedGame::makeGameObject(string name) {
     c->direction = ofRandom(TWO_PI);
     c->worldSize = &worldSize;
     g->behaviour = ofPtr<IBehaviour>(c);
-  
+    
     gameObjects.push_back(g);
     return g;
+}
+
+void ObjectOrientedGame::tick(float dt) {
+    cameraRect.translate(cameraMovement.x * cameraPanSpeed * dt,
+                         cameraMovement.y * cameraPanSpeed * dt);
+    
+    for (int i = 0; i < gameObjects.size(); ++i) {
+        gameObjects[i]->tick(dt);
+    }
+    
+    for (int i = 0; i < gameObjects.size() - 1; ++i) {
+        for (int j = i + 1; j < gameObjects.size(); ++j) {
+            ofPtr<GameObject> a = gameObjects[i];
+            ofPtr<GameObject> b = gameObjects[j];
+            ofPtr<IRenderer> ar = a->renderer;
+            ofPtr<IRenderer> br = b->renderer;
+            if(ar->getPosition().distanceSquared(br->getPosition()) < 400) {
+                a->behaviour->onCollision(b);
+                b->behaviour->onCollision(a);
+            }
+        }
+    }
+}
+
+void ObjectOrientedGame::render() {
+    ofBackground(10);
+    ofFill();
+    ofSetColor(50);
+    ofRect(ofRectangle(-cameraRect.x, -cameraRect.y, worldSize, worldSize));
+    
+    for (int i = 0; i < gameObjects.size(); ++i) {
+        gameObjects[i]->render(cameraRect);
+    }
+}
+
+ofPoint ObjectOrientedGame::randomCoordinate() {
+    return ofPoint(ofRandom(worldSize), ofRandom(worldSize));
 }

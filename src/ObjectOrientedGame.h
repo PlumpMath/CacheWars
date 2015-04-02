@@ -12,9 +12,10 @@ class ObjectOrientedGame {
     
 public:
     
-    float worldSize = 6000;
+    const int gameObjectCount = 500;
+    float worldSize = 4000;
     
-    float cameraPanSpeed = 500;
+    float cameraPanSpeed = 1500;
     ofRectangle cameraRect;
     ofVec2f cameraMovement;
     

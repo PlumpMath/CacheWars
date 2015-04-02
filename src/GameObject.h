@@ -5,14 +5,18 @@
 
 // Component interfaces
 
+class GameObject;
+
 class IBehaviour {
 public:
     virtual void tick(float dt) = 0;
+    virtual void onCollision(ofPtr<GameObject>) = 0;
 };
 
 class IRenderer {
 public:
     virtual void render(const ofRectangle& cameraRect) = 0;
+    virtual ofPoint getPosition() = 0;
 };
 
 
@@ -40,6 +44,7 @@ public:
     ofPoint position;
     ofColor color;
     void render(const ofRectangle& cameraRect) override;
+    ofPoint getPosition() { return position; }
 };
 
 class GoInCircles : public IBehaviour {
@@ -48,7 +53,10 @@ public:
     float direction = 0.0f;
     float *worldSize = NULL;
     ShipRenderer *renderer;
+    
     void tick(float dt) override;
+    void onCollision(ofPtr<GameObject>) override;
+    void moveForward(float dt);
 };
 
 
