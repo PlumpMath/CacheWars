@@ -8,15 +8,18 @@
 #include "IGame.h"
 
 class DataOrientedGame : public IGame {
+    
     float worldSize;
+    
     vector<ShipData> shipDatas;
     vector<EngineData> engineDatas;
     vector<RenderData> renderDatas;
+    
     ofRectangle cameraRect;
-    void make_ship(string name);
     float cameraPanSpeed = 1500;
     ofVec2f cameraMovement;
     
+    void make_ship(string name);
     void ship_collided(int collider, int other);
     
 public:

@@ -54,7 +54,12 @@ void ObjectOrientedGame::tick(float dt) {
         for (int j = i + 1; j < gameObjects.size(); ++j) {
             GameObject *a = gameObjects[i];
             GameObject *b = gameObjects[j];
-            if(a->position.distanceSquared(b->position) < 300) {
+            ofPoint p1 = a->position;
+            ofPoint p2 = b->position;
+            float dx = p2.x - p1.x;
+            float dy = p2.y - p1.y;
+            float distanceSquared = dx * dx + dy * dy;
+            if(distanceSquared < 300) {
                 a->behaviour->onCollision(a, b);
                 b->behaviour->onCollision(b, a);
             }

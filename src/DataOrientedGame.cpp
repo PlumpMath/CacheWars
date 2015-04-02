@@ -73,6 +73,9 @@ void DataOrientedGame::tick(float dt) {
         tick_ship(dt, shipDatas[i], engineDatas[i], worldSize);
     }
     
+    typedef set< pair<int,int> > Colliders;
+    Colliders collidingShips;
+    
     const int size = shipDatas.size();
     for (int i = 0; i < size - 1; ++i) {
         for (int j = i + 1; j < size; ++j) {
@@ -82,10 +85,16 @@ void DataOrientedGame::tick(float dt) {
             float dy = p2.y - p1.y;
             float distanceSquared = dx * dx + dy * dy;
             if(distanceSquared < 300) {
-                ship_collided(i, j);
-                ship_collided(j, i);
+                pair<int, int> colliding(i, j);
+                collidingShips.insert(colliding);
             }
         }
+    }
+    
+    for (Colliders::iterator i = collidingShips.begin(); i != collidingShips.end(); ++i) {
+        pair<int, int> colliding = *i;
+        ship_collided(colliding.first, colliding.second);
+        ship_collided(colliding.second, colliding.first);
     }
 }
 
