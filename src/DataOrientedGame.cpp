@@ -20,7 +20,10 @@ void DataOrientedGame::make_ship(string name) {
     };
     engineDatas.push_back(engineData);
     
-    RenderData renderData = { randomColor() };
+    RenderData renderData = {
+        .color = randomColor(),
+        .name = name
+    };
     renderDatas.push_back(renderData);
 }
 

@@ -9,14 +9,13 @@ class GameObject;
 
 class IBehaviour {
 public:
-    virtual void tick(float dt) = 0;
-    virtual void onCollision(ofPtr<GameObject>) = 0;
+    virtual void tick(GameObject* g, float dt) = 0;
+    virtual void onCollision(GameObject* g, GameObject *other) = 0;
 };
 
 class IRenderer {
 public:
-    virtual void render(const ofRectangle& cameraRect) = 0;
-    virtual ofPoint getPosition() = 0;
+    virtual void render(const GameObject* g, const ofRectangle& cameraRect) = 0;
 };
 
 
@@ -27,6 +26,7 @@ public:
     string name;
     ofPtr<IBehaviour> behaviour;
     ofPtr<IRenderer> renderer;
+    ofPoint position;
     
     GameObject(string name);
     ~GameObject();
@@ -41,10 +41,8 @@ public:
 class ShipRenderer : public IRenderer {
 public:
     float direction; // slave value
-    ofPoint position;
     ofColor color;
-    void render(const ofRectangle& cameraRect) override;
-    ofPoint getPosition() { return position; }
+    void render(const GameObject* g, const ofRectangle& cameraRect) override;
 };
 
 class GoInCircles : public IBehaviour {
@@ -54,9 +52,9 @@ public:
     float *worldSize = NULL;
     ShipRenderer *renderer;
     
-    void tick(float dt) override;
-    void onCollision(ofPtr<GameObject>) override;
-    void moveForward(float dt);
+    void tick(GameObject* g, float dt) override;
+    void onCollision(GameObject* g, GameObject *other) override;
+    void moveForward(GameObject* g, float dt);
 };
 
 

@@ -22,11 +22,12 @@ void ObjectOrientedGame::setup(float worldSize, int gameObjectCount) {
     }
 }
 
-ofPtr<GameObject> ObjectOrientedGame::makeGameObject(string name) {
-    ofPtr<GameObject> g(new GameObject(name));
+void ObjectOrientedGame::makeGameObject(string name) {
+    GameObject *g = new GameObject(name);
+    
+    g->position = randomCoordinate();
     
     ShipRenderer *r = new ShipRenderer;
-    r->position = randomCoordinate();
     r->color = randomColor();
     g->renderer = ofPtr<IRenderer>(r);
     
@@ -51,13 +52,11 @@ void ObjectOrientedGame::tick(float dt) {
     
     for (int i = 0; i < gameObjects.size() - 1; ++i) {
         for (int j = i + 1; j < gameObjects.size(); ++j) {
-            ofPtr<GameObject> a = gameObjects[i];
-            ofPtr<GameObject> b = gameObjects[j];
-            ofPtr<IRenderer> ar = a->renderer;
-            ofPtr<IRenderer> br = b->renderer;
-            if(ar->getPosition().distanceSquared(br->getPosition()) < 300) {
-                a->behaviour->onCollision(b);
-                b->behaviour->onCollision(a);
+            GameObject *a = gameObjects[i];
+            GameObject *b = gameObjects[j];
+            if(a->position.distanceSquared(b->position) < 300) {
+                a->behaviour->onCollision(a, b);
+                b->behaviour->onCollision(b, a);
             }
         }
     }

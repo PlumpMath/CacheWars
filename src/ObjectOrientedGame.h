@@ -9,10 +9,9 @@
 using namespace std;
 
 class ObjectOrientedGame : public IGame {
-    vector< ofPtr<GameObject> > gameObjects;
-    vector<GameObject*> gameObjects2;
+    vector<GameObject*> gameObjects;
     
-    ofPtr<GameObject> makeGameObject(string name);
+    void makeGameObject(string name);
     ofPoint randomCoordinate();
     
     float cameraPanSpeed = 1500;

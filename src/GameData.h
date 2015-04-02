@@ -14,6 +14,7 @@ struct EngineData {
 
 struct RenderData {
     ofColor color;
+    string name;
 };
 
 namespace GameData {
