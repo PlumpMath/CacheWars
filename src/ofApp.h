@@ -1,14 +1,18 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ObjectOrientedGame.h"
 #include "DataOrientedGame.h"
+#include "ObjectOrientedGame.h"
+#include "IGame.h"
 
 class ofApp : public ofBaseApp {
 
     int frame = 0;
     float dt, t;
-    ObjectOrientedGame game;
+    IGame *game;
+    
+    DataOrientedGame do_game;
+    ObjectOrientedGame oo_game;
     
 public:
     void setup();

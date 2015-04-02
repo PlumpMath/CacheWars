@@ -52,7 +52,9 @@ void GoInCircles::tick(float dt) {
 }
 
 void GoInCircles::onCollision(ofPtr<GameObject> other) {
+    renderer->color *= 1.2;
     speed = ofRandom(10, 20);
-    direction += PI;
+    ofPoint diff = other->renderer->getPosition() - renderer->position;
+    direction = atan2f(diff.x, diff.y);
     moveForward(1.0);
 }

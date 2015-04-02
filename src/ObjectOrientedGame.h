@@ -1,30 +1,33 @@
-#pragma once
+#ifndef OBJECT_ORIENTED
+#define OBJECT_ORIENTED
 
 #include <ofUtils.h>
 #include <vector>
 #include "GameObject.h"
+#include "IGame.h"
 
 using namespace std;
 
-class ObjectOrientedGame {
+class ObjectOrientedGame : public IGame {
     vector< ofPtr<GameObject> > gameObjects;
     vector<GameObject*> gameObjects2;
     
-public:
-    
-    const int gameObjectCount = 500;
-    float worldSize = 4000;
+    ofPtr<GameObject> makeGameObject(string name);
+    ofPoint randomCoordinate();
     
     float cameraPanSpeed = 1500;
     ofRectangle cameraRect;
     ofVec2f cameraMovement;
     
-    void setup();
+    float worldSize;
+    
+public:
+    
+    void setup(float worldSize, int gameObjectCount);
     void tick(float dt);
     void render();
+    void setCameraMovement(ofVec2f mov) { cameraMovement = mov; }
     
-    ofPtr<GameObject> makeGameObject(string name);
-    ofPoint randomCoordinate();
-    
-    void moveCamera(float x, float y);
 };
+
+#endif

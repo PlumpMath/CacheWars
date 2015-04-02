@@ -7,7 +7,12 @@ ofColor randomColor() {
     return ofColor(ofRandom(100, 255), ofRandom(100, 255), ofRandom(100, 255));
 }
 
-void ObjectOrientedGame::setup() {
+ofPoint ObjectOrientedGame::randomCoordinate() {
+    return ofPoint(ofRandom(worldSize), ofRandom(worldSize));
+}
+
+void ObjectOrientedGame::setup(float worldSize, int gameObjectCount) {
+    this->worldSize = worldSize;
     cameraRect = ofRectangle(0, 0, ofGetWidth(), ofGetHeight());
     
     for(int i = 0; i < gameObjectCount; i++) {
@@ -50,7 +55,7 @@ void ObjectOrientedGame::tick(float dt) {
             ofPtr<GameObject> b = gameObjects[j];
             ofPtr<IRenderer> ar = a->renderer;
             ofPtr<IRenderer> br = b->renderer;
-            if(ar->getPosition().distanceSquared(br->getPosition()) < 400) {
+            if(ar->getPosition().distanceSquared(br->getPosition()) < 300) {
                 a->behaviour->onCollision(b);
                 b->behaviour->onCollision(a);
             }
@@ -67,8 +72,4 @@ void ObjectOrientedGame::render() {
     for (int i = 0; i < gameObjects.size(); ++i) {
         gameObjects[i]->render(cameraRect);
     }
-}
-
-ofPoint ObjectOrientedGame::randomCoordinate() {
-    return ofPoint(ofRandom(worldSize), ofRandom(worldSize));
 }

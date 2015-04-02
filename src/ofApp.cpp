@@ -1,51 +1,65 @@
 #include "ofApp.h"
 
 void ofApp::setup() {
-    game.setup();
+    int ship_count = 2000;
+    do_game.setup(4000, ship_count);
+    oo_game.setup(4000, ship_count);
+    game = &oo_game;
     t = ofGetElapsedTimef();
 }
 
 void ofApp::update() {
     dt = ofGetElapsedTimef() - t;
     t = ofGetElapsedTimef();
-    game.tick(dt);
+    game->tick(dt);
+    float tick_t = ofGetElapsedTimef();
     frame++;
     if(frame % 60 == 0) {
-        cout << "dt: " << dt << ", fps: " << 1.0f / dt << endl;
+        cout << "dt: " << dt << ", fps: " << 1.0f / dt << ", tick: " << tick_t - t << endl;
     }
 }
 
 void ofApp::draw() {
-    game.render();
+    game->render();
 }
 
 void ofApp::keyPressed(int key) {
     if(key == OF_KEY_LEFT) {
-        game.cameraMovement.x = -1.0f;
+        game->setCameraMovement(ofVec2f(-1.0f, 0));
     }
     else if(key == OF_KEY_RIGHT) {
-        game.cameraMovement.x = 1.0f;
+        game->setCameraMovement(ofVec2f(1.0f, 0));
     }
     else if(key == OF_KEY_UP) {
-        game.cameraMovement.y = -1.0f;
+        game->setCameraMovement(ofVec2f(0, -1.0f));
     }
     else if(key == OF_KEY_DOWN) {
-        game.cameraMovement.y = 1.0f;
+        game->setCameraMovement(ofVec2f(0, 1.0f));
     }
 }
 
 void ofApp::keyReleased(int key) {
+    if(key == OF_KEY_TAB) {
+        if(game == &oo_game) {
+            cout << "Switching to data oriented game..." << endl;
+            game = &do_game;
+        } else {
+            cout << "Switching to object oriented game..." << endl;
+            game = &oo_game;
+        }
+    }
+    
     if(key == OF_KEY_LEFT) {
-        game.cameraMovement.x = 0.0f;
+        game->setCameraMovement(ofVec2f(0, 0));
     }
     else if(key == OF_KEY_RIGHT) {
-        game.cameraMovement.x = 0.0f;
+        game->setCameraMovement(ofVec2f(0, 0));
     }
     else if(key == OF_KEY_UP) {
-        game.cameraMovement.y = 0.0f;
+        game->setCameraMovement(ofVec2f(0, 0));
     }
     else if(key == OF_KEY_DOWN) {
-        game.cameraMovement.y = 0.0f;
+        game->setCameraMovement(ofVec2f(0, 0));
     }
 }
 
