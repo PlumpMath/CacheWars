@@ -24,9 +24,9 @@ public:
 class GameObject {
 public:
     string name;
-    ofPtr<IBehaviour> behaviour;
-    ofPtr<IRenderer> renderer;
-    ofPoint position;
+    IBehaviour *behaviour;
+    IRenderer *renderer;
+    ofVec2f position;
     
     GameObject(string name);
     ~GameObject();

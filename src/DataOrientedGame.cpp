@@ -73,9 +73,15 @@ void DataOrientedGame::tick(float dt) {
         tick_ship(dt, shipDatas[i], engineDatas[i], worldSize);
     }
     
-    for (int i = 0; i < shipDatas.size() - 1; ++i) {
-        for (int j = i + 1; j < shipDatas.size(); ++j) {
-            if(shipDatas[i].position.distanceSquared(shipDatas[j].position) < 300) {
+    const int size = shipDatas.size();
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = i + 1; j < size; ++j) {
+            ofPoint p1 = shipDatas[i].position;
+            ofPoint p2 = shipDatas[j].position;
+            float dx = p2.x - p1.x;
+            float dy = p2.y - p1.y;
+            float distanceSquared = dx * dx + dy * dy;
+            if(distanceSquared < 300) {
                 ship_collided(i, j);
                 ship_collided(j, i);
             }

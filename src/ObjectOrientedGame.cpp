@@ -29,14 +29,14 @@ void ObjectOrientedGame::makeGameObject(string name) {
     
     ShipRenderer *r = new ShipRenderer;
     r->color = randomColor();
-    g->renderer = ofPtr<IRenderer>(r);
+    g->renderer = r;
     
     GoInCircles *c = new GoInCircles;
     c->renderer = r;
     c->speed = ofRandom(30, 50);
     c->direction = ofRandom(TWO_PI);
     c->worldSize = &worldSize;
-    g->behaviour = ofPtr<IBehaviour>(c);
+    g->behaviour = c;
     
     gameObjects.push_back(g);
     return g;

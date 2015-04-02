@@ -1,10 +1,11 @@
 #include "ofApp.h"
 
 void ofApp::setup() {
-    int ship_count = 2000;
-    do_game.setup(4000, ship_count);
-    oo_game.setup(4000, ship_count);
-    game = &oo_game;
+    float worldSize = 6000.0f;
+    int ship_count = 4000;
+    do_game.setup(worldSize, ship_count);
+    oo_game.setup(worldSize, ship_count);
+    game = &do_game;
     t = ofGetElapsedTimef();
 }
 

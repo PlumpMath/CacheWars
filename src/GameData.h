@@ -4,7 +4,7 @@
 #include <ofUtils.h>
 
 struct ShipData {
-    ofPoint position;
+    ofVec2f position;
 };
 
 struct EngineData {
